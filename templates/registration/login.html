@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+<h1>Log In</h1>
+    {% if from.errors %}
+    <p>Incorrect username/password! Try Again.</p>
+{% endif %}
+
+{% if next %}
+
+{% if user.is_authenticated %}
+
+    <p> You dont have permission to view this page!</p>
+
+{% else %}
+
+    <p> please Log In to see this page!</p>
+  
+{% endif %}
+
+{% endif %}
+
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    <ul>
+        <li>
+            {{form.username.label_tag}}
+            {{form.username}}
+        </li>
+        <li>
+            {{form.password.label_tag}}
+            {{form.password}}
+        </li>
+
+        <input type="submit" value="Login">
+        <input type="hidden" name="next" value="{{ next }}">
+    </ul>
+</form>   
+</body>
+</html>
