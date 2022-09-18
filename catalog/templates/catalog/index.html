@@ -386,7 +386,7 @@ ul#topnav li a.active, ul#topnav li a.active:hover {    background: #eee;  color
 <input type="checkbox" id="show-menu" role="button">
 <ul id="topnav">
 <li><a class="active">Home</a></li>
-<li><a href="{% url "catalog:addbook" %}">Add Book</a></li>
+<li><a href="{% url "catalog:create_book" %}">Add Book</a></li>
 <li><a href="{% url "catalog:addauthor" %}">Add author</a></li>
 <li><a href="{% url "catalog:addlanguage" %}">Add language</a></li>
 <li><a href="{% url "catalog:addgenre" %}">Add genre</a></li>
@@ -416,13 +416,29 @@ ul#topnav li a.active, ul#topnav li a.active:hover {    background: #eee;  color
 					<li>Available number of Books: <em>{{num_instances_available}}</em></li>
 					
 				</ul>
-				<blockquote><p>Proin congue risus eget eros. Morbi ornare, enim ac convallis pellentesque, metus arcu sagittis diam, nec fringilla nunc eros id arcu. Nunc sagittis ligula id justo. Nam et pede a mi facilisis consequat. Quisque tincidunt, turpis vel commodo lacinia, arcu odio bibendum metus, eget elementum ipsum eros sit amet velit.</p></blockquote>
+				<blockquote><p>Books in the inventory:</p>
+					<ul>
+						{% for book in book_data %}
+						<li>
+							{{book.title}} by {{book.author}}
+						</li>
+						{% endfor %}
+						
+						
+					</ul>
+				</blockquote>
 
                 <div class="item">
-                    <br><br><br><br><br><br><br><br><br> <br><br><br>
+                   
     
                 </div>
-				<span>17 March 2017 @ 1:28 PM | <a href="#">0 Comment(s)</a> | Posted by <a href="#">webmasterneo</a></span>
+				<span>
+					
+					{% for auth in authors %}
+				| {{auth}} |
+					{% endfor %}
+					
+				</span>
 			</div>
 			<!--another post item-->
 			

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import CreateView, TemplateView, DetailView
+from django.urls import reverse
 # Create your views here.
 from .models import Book, Author, BookInstance, Genre, Language
 
@@ -9,13 +10,17 @@ def cathome(request):
 
 def index(request):
     num_book = Book.objects.all().count()
+    book_data=Book.objects.all()
     num_instances = BookInstance.objects.all().count()
+    authors = Author.objects.all()
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
     
     context = {
         'num_books':num_book,
         'num_intances':num_instances,
         'num_instances_available':num_instances_available,
+        'book_data':book_data,
+        'authors':authors,
     }
     
     return render(request,'catalog/index.html',context=context)
@@ -23,7 +28,9 @@ def index(request):
 class BookCreate(CreateView):
     model = Book
     fields ='__all__'
-    success_url= 'catalog:book_detail'
+    success_url= "/catalog/thanks/"
+  
+
 
 class BookDetail(DetailView):
     model = Book
@@ -31,22 +38,21 @@ class BookDetail(DetailView):
    
 
 class ThanksView(TemplateView):
-    template_name= 'classroom/thanks.html'
+    template_name= 'catalog/thanks.html'
 
 class AuthorCreate(CreateView):
     model = Author
     fields = '__all__'
-    success_url: 'catalog/thanks.html'
+    success_url= "/catalog/thanks/"
 
 class GenreCreate(CreateView):
     model = Genre
     fields = '__all__'
-    success_url: 'catalog/thanks.html'
-    
+    success_url= "/catalog/thanks/"
 class LanguageCreate(CreateView):
     model = Language
     fields = '__all__'
-    success_url: 'catalog/thanks.html'
+    success_url= "/catalog/thanks/"
     
     def get_absolute_url(self):
         return f'catalog/thanks.html'
@@ -55,7 +61,7 @@ class LanguageCreate(CreateView):
 class BookInstanceCreate(CreateView):
     model = BookInstance
     fields = '__all__'
-    success_url: 'catalog/thanks.html'
+    success_url= "/catalog/thanks/"
     
     
     
