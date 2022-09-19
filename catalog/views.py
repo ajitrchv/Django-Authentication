@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import CreateView, TemplateView, DetailView
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 from .models import Book, Author, BookInstance, Genre, Language
 
@@ -25,7 +27,9 @@ def index(request):
     
     return render(request,'catalog/index.html',context=context)
 
-class BookCreate(CreateView):
+
+
+class BookCreate(LoginRequiredMixin, CreateView):
     model = Book
     fields ='__all__'
     success_url= "/catalog/thanks/"
@@ -63,8 +67,10 @@ class BookInstanceCreate(CreateView):
     fields = '__all__'
     success_url= "/catalog/thanks/"
     
-    
-    
+@login_required   
+def my_view(request):
+    return render(request, 'catalog/my_view.html')
+
 
 
     

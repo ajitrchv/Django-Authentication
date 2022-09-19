@@ -361,7 +361,7 @@ ul#topnav li a.active, ul#topnav li a.active:hover {    background: #eee;  color
 #content ul {margin-left:0; padding-left:0;}
 #content ul li {margin-left:0; padding-left:0;}
 
-
+#auth p {color: red;}
 /* footer */
 #footer { font-size:10px; text-align: center; padding-bottom:20px;}
 #footer span {display:none;}
@@ -382,6 +382,7 @@ ul#topnav li a.active, ul#topnav li a.active:hover {    background: #eee;  color
 <h1>Django<em>Library</em></h1>
 <p>The library intended to learn Django Authentication.</p>
 <!-- menu -->
+{% if user.is_authenticated %}
 <label for="show-menu" class="responsive">&#9776;</label>
 <input type="checkbox" id="show-menu" role="button">
 <ul id="topnav">
@@ -392,6 +393,7 @@ ul#topnav li a.active, ul#topnav li a.active:hover {    background: #eee;  color
 <li><a href="{% url "catalog:addgenre" %}">Add genre</a></li>
 <li><a href="{% url "catalog:addbookinstance" %}">Add Bookinstance</a></li>
 </ul>
+{% endif %}
 <!-- end menu -->
 </div>
 <!--end of header-->
@@ -407,8 +409,28 @@ ul#topnav li a.active, ul#topnav li a.active:hover {    background: #eee;  color
 		<div id="content">
 			<!--post item-->
 			<div class="item">
+
+				
+				{% if user.is_authenticated %}
 				<h1>Sample paragraph, blockquote, and list</h1>
 				<p>This template, updated after almost 9 years since the original release in 2008, is released under the <a href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution Non-Commercial License</a>. If you use it, you must retain the "Template Design by MLP Design" tag and link in place. You MAY NOT use the templates in adult or adult-oriented websites!</p>
+				{% else %}
+				<h1>Bruh, you are not logged in!</h1>
+				<p>You might have to <a href="{% url 'login' %}?next={{request.path}}">Login Here</a> to see the contents.</p>
+				{% endif %}
+
+				<div class="auth">
+					{% if user.is_authenticated %}
+					  <h1>You are Logged in.</h1>
+					  <p class="auth">Welcome {{user.get_username}}</p>
+					  
+					  <a href="{% url 'logout' %}?next={{request.path}}">Logout</a>
+		
+					{% endif %}
+				</div>
+				<br><br>
+				
+				{% if user.is_authenticated %}
 				
 				<ul>
 					<li>Total number of Books: <em>{{num_books}}</em></li>
@@ -441,6 +463,7 @@ ul#topnav li a.active, ul#topnav li a.active:hover {    background: #eee;  color
 				</span>
 			</div>
 			<!--another post item-->
+			{% endif %}
 			
 			<!--end of another post item-->			
 		</div>
