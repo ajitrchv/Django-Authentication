@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import CreateView, TemplateView, DetailView
+from django.views.generic import CreateView, TemplateView, DetailView, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -73,8 +73,19 @@ def my_view(request):
     return render(request, 'catalog/my_view.html')
 
 
-
+# ----- creating user signup page
 class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'catalog/signup.html'
+
+
+class CheckoutBooks(LoginRequiredMixin, ListView):
+    model = BookInstance
+    template_name = 'catalog/profile.html'
+    paginate_by = 5 #how many instances you need to show on one page
+    
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user)
+    
+    
