@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import CreateView, TemplateView, DetailView
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 from .models import Book, Author, BookInstance, Genre, Language
 
@@ -73,4 +74,7 @@ def my_view(request):
 
 
 
-    
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'catalog/signup.html'
